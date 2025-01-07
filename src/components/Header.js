@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleMenu } from '../utils/appSlice';
 import { getSearchSuggestions } from '../utils/constents';
+import { cacheResults } from '../utils/searchSlice';
 
 
 const Header = () => {
@@ -14,13 +15,23 @@ const Header = () => {
         dispatch(toggleMenu());
     }
 
-    useEffect(() => {
-        //Api Call on Every Search Query change
-        const timer = setTimeout(() => getSearchSuggestions(searchQuery, (results) => {
-            setSuggestions(results);
-        }), 200);
+    const searchCache = useSelector(store => store.search);
 
-        return () => clearTimeout(timer); // cleanup function to cancel the timer when component unmounts
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchCache[searchQuery]) {
+                setSuggestions(searchCache[searchQuery]); // Use cached results from store if available
+            } else {
+                getSearchSuggestions(searchQuery, (results) => {
+                    setSuggestions(results);
+                    dispatch(cacheResults({
+                        [searchQuery]: results
+                    })); // Store results in Store
+                });
+            }
+        }, 200);
+
+        return () => clearTimeout(timer); // Cleanup function to clear the timer
     }, [searchQuery]);
 
 
