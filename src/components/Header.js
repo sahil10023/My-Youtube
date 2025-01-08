@@ -62,7 +62,11 @@ const Header = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search"
                         onFocus={() => setShowSuggestions(true)}
-                        onBlur={() => setShowSuggestions(false)}
+                        onBlur={() => {
+                            setTimeout(() => {
+                                setShowSuggestions(false);
+                            },75); // Adjust the delay as needed
+                        }}
                     />
                     <button className="border border-gray-700 p-2 rounded-r-full hover:bg-gray-100">
                         🔍
@@ -73,7 +77,7 @@ const Header = () => {
                 {showSuggestions && (
                     <div className="absolute left-1/2 transform md:-translate-x-[53%] -translate-x-[56%] mt-[0.3rem] w-1/2 md:w-1/2 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
                         <ul className="text-left">
-                            {Suggestions?.map((suggestion) => <li key={suggestion} className="p-2 hover:bg-gray-100 cursor-pointer">🔍 {suggestion}</li>)}
+                            {Suggestions?.map((suggestion) => <li key={suggestion} onClick={() => setSearchQuery(suggestion)} className="p-2 hover:bg-gray-100 cursor-pointer">🔍 {suggestion}</li>)}
                         </ul>
                     </div>
                 )}
