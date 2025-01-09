@@ -72,35 +72,38 @@ const CommentsContainer = () => {
 
   const Comment = ({ data }) => {
     return (
-      <div className='mb-4 flex bg-gray-100 shadow-sm rounded-l-full pl-2 rounded-r-md'>
-        <div className='w-7 my-auto h-7  text-white bg-red-800 text-center rounded-full' fill='none' >
+      <div className="mb-4 flex bg-gray-100 shadow-sm rounded-l-full pl-2 rounded-r-md">
+        <div className="w-7 h-7 self-center flex items-center justify-center text-white bg-red-800 rounded-full">
           {data.Name?.charAt(0)}
         </div>
-        <div className='items-center pl-2 '>
-          <span className=' text-sm'>{data.Name}</span>
-          <span className='text-sm text-gray-600 ml-2'>{data.Date}</span>
-          <p>{data.Comment}</p>
+        <div className="flex flex-col pl-2">
+          <span className="text-sm font-semibold">{data.Name}</span>
+          {/* <span className="text-xs text-gray-600">{data.Date}</span> */}
+          <p className="text-sm mt-1">{data.Comment}</p>
         </div>
-        {/* {(data.Replies.length > 0) && <Comment data={data.Replies} />} */}
       </div>
-    )
-  }
+    );
+  };
 
   const CommentsList = ({ comments }) => {
-    return comments.map((comment, index) => <div key={index} >
-      <Comment data={comment} />
-      <div className='pl-5 border border-l-black  ml-5'>
-        <CommentsList comments={comment.Replies} />
+    return comments.map((comment, index) => (
+      <div key={index}>
+        <Comment data={comment} />
+        {comment.Replies && comment.Replies.length > 0 && (
+          <div className="pl-4 border-l-2 border-gray-300 ml-4">
+            <CommentsList comments={comment.Replies} />
+          </div>
+        )}
       </div>
-    </div>)
-  }
+    ));
+  };
 
   return (
-    <div className='m-5 p-2'>
-      <h1 className='text-2xl font-bold my-4'>Comment Section</h1>
+    <div className="m-2 lg:m-5 p-2">
+      <h1 className="text-xl lg:text-2xl font-bold my-4">Comment Section</h1>
       <CommentsList comments={commentsData} />
     </div>
   )
 }
 
-export default CommentsContainer
+export default CommentsContainer;

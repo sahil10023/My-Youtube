@@ -84,7 +84,7 @@ const Header = () => {
             </div>
 
             {/* Right Section */}
-            <div className="col-span-1 flex justify-center items-center">
+            <div className="col-span-1 hidden md:flex justify-center items-center">
                 <img
                     className="h-8"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQdztTDcpZ2pFqwWDYwSXbvZq5nzJYg5cn8w&s"
